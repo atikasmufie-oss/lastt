@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOKOBOKO</title>
-    <link rel="icon" href="images/kobo_ico.png.png" type="images">
+    <link class="nav-logo" rel="icon" href="images/kobo_ico.png.png" type="images">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,6 @@
 </head>
 <body>
 
-    <!-- Navigation -->
     <nav id="templatemo-nav">
         <div class="nav-container">
             <a href="#home" class="nav-logo">Kobo Kanaeru</a>
@@ -31,27 +30,23 @@
                 <li><a href="#klip">KLIP</a></li>
                 <li><a href="#map">LOKASI</a></li>
             </ul>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <p id="userInfo" style="color: #fff; margin: 0; font-family: 'Source Sans 3', sans-serif;">Belum Login</p>
-                <div id="authArea">
-                    <button onclick="goLogin()" class="nav-cta">Login</button>
-                </div>
+            <p id="userInfo" style="margin-right: 15px; color: #fff; font-family: 'Source Sans 3', sans-serif;">Belum Login</p>
+            <div id="authArea">
+                <button onclick="goLogin()" class="nav-cta">Login</button>
             </div>
         </div>
     </nav>
 
-    <!-- Section 1: Home / Hero -->
     <section id="beranda" class="parallax-section">
         <div class="parallax-bg" data-speed="0.5" style="background-image: url('images/b3965c37dde1b662eeda8c17e67b65bd3a2008e80c87670995e6d2a5c26318837bc905ce84373d8ff067a18a4bbc4357a4a2c0099ceddddc2d1d95216668b31e.jpg')"></div>
         <div class="parallax-overlay"></div>
         <div class="section-content">
             <h1 class="section-title hero-title">KOBO KANAERU</h1>
             <p class="section-subtitle caps">AYO BERKENALAN DENGAN KOBO KANAERU</p>
-            <a href="#tentang" class="btn-scroll">EKSPLORASI</a>
+            <a href="#about" class="btn-scroll">EKSPLORASI</a>
         </div>
     </section>
 
-    <!-- Section 2: About -->
     <section id="tentang" class="parallax-section">
         <div class="parallax-bg" data-speed="0.45" style="background-image: url('images/f0bab0aa88c5b241863085e03813f2dc.jpg')"></div>
         <div class="parallax-overlay"></div>
@@ -81,13 +76,12 @@
         </div>
     </section>
 
-    <!-- Section 3: Services -->
     <section id="konten" class="parallax-section">
         <div class="parallax-bg" data-speed="0.55" style="background-image: url('images/65b9c65977da4b961467baec96448bdc.jpg')"></div>
         <div class="parallax-overlay overlay-dark"></div>
         <div class="section-content">
             <h2 class="section-title">KATEGORI KONTEN</h2>
-            <p class="section-subtitle caps">GAMING &middot; MUSIK &middot; FREETALK</p>
+            <p class="section-subtitle caps">GAMING · MUSIK · FREETALK</p>
             <div class="services-grid">
                 <div class="service-item">
                     <div class="service-icon">
@@ -132,7 +126,6 @@
         </div>
     </section>
 
-    <!-- Section 4: Gallery -->
     <section id="musik" class="parallax-section">
         <div class="parallax-bg" data-speed="0.5" style="background-image: url('images/blue-background-with-white-cloud-blue-background_807812-1774.avif')"></div>
         <div class="parallax-overlay"></div>
@@ -140,7 +133,6 @@
             <h2 class="section-title">MUSIK</h2>
             <p class="section-subtitle caps">Beberapa lagu solo Kobo!</p>
             <div class="music-grid">
-                <!-- Data lagu tetap aman sesuai aslinya -->
                 <a href="https://youtu.be/SF-_47-oCtk?si=-y-_Nk5M1NWeFHt7" target="_blank" class="music-card">
                     <div class="cover-wrap">
                         <img src="images/Kobo-Kanaeru_Mantra-Hujan_jk-1.jpg" alt="Judul Lagu 1">
@@ -173,11 +165,42 @@
                     <p class="song-title">Mandi Biar Wangi ☆ Washa Washa!</p>
                     <p class="song-sub">Kobo Kanaeru</p>
                 </a>
+                <a href="https://youtu.be/F1PRA4IBP8c?si=fuhZuUMu-b8VwQOC" target="_blank" class="music-card">
+                    <div class="cover-wrap">
+                        <img src="images/FondMemories.png" alt="Judul Lagu 5">
+                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+                    </div>
+                    <p class="song-title">Fond Memories</p>
+                    <p class="song-sub">Kobo Kanaeru</p>
+                </a>
+                <a href="https://youtu.be/dGhY9i98hKI?si=CUUaH4Cozh0zXXSc" target="_blank" class="music-card">
+                    <div class="cover-wrap">
+                        <img src="images/FirstLove.png" alt="Judul Lagu 6">
+                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+                    </div>
+                    <p class="song-title">First Love</p>
+                    <p class="song-sub">Kobo Kanaeru</p>
+                </a>
+                <a href="https://youtu.be/50Ura_ZcSvY?si=SrCgodu_p8b4FmuF" target="_blank" class="music-card">
+                    <div class="cover-wrap">
+                        <img src="images/f463568f6aff6adb8585d3fb3067b9e7.1000x1000x1.jpg" alt="Judul Lagu 7">
+                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+                    </div>
+                    <p class="song-title">HELP!!!</p>
+                    <p class="song-sub">Kobo Kanaeru</p>
+                </a>
+                <a href="https://youtu.be/Y1lI26a0E1E?si=4AGJ3-FJQ-7EEm40" target="_blank" class="music-card">
+                    <div class="cover-wrap">
+                        <img src="images/a9095bc52caca0c9fd59a3107fa4b678.1000x1000x1.png" alt="Judul Lagu 8">
+                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
+                    </div>
+                    <p class="song-title">Entah...</p>
+                    <p class="song-sub">Kobo Kanaeru</p>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Section 5: Clip -->
     <section id="klip" class="parallax-section">
         <div class="parallax-bg" data-speed="0.5" style="background-image: url('images/Sky_Blue.png')"></div>
         <div class="parallax-overlay overlay-medium"></div>
@@ -192,35 +215,34 @@
         </div>
     </section>
 
-    <!-- Section 6: Map -->
     <section id="map" class="parallax-section">
         <div class="parallax-bg" data-speed="0.5" style="background-image: url('images/blue-background-with-white-cloud-blue-background_807812-1774.avif')"></div>
         <div class="parallax-overlay overlay-medium"></div>
         <div class="section-content">
             <h2 class="section-title">LOKASI COVER CORP</h2>
+            <p class="section-subtitle caps">COVER CORP ADALAH NAMA PERUSAHAAN YANG MENAUNGI AGENSI HOLOLIVE</p>
             <div class="map-wrap">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.3033485967244!2d139.7407474744504!3d35.64489713197131!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889682a7243eb%3A0x9e8ab24bd894e12b!2sCover%20Corp.!5e0!3m2!1sid!2sid!4v1779514340063!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer id="templatemo-footer">
-        <p>Copyright &copy; 2026 Sang Kobokerz.</p>
+        <p>Copyright © 2026 Sang Kobokerz.</p>
     </footer>
 
     <script src="templatemo-parallax-script.js"></script>
-    
-    <!-- SCRIPT UTK INTEGRASI MENU LOGIN (FOLDER: LOGIN) -->
+    <script src="login/js/welcome.js"></script>
+
     <script>
         function goLogin() {
-            window.location.href = "login/index.html"; // <-- SUDAH DIUBAH KE FOLDER 'login'
+            window.location.href = "login/index.html";
         }
 
         function logout() {
             localStorage.removeItem("loggedInUser");
-            alert("Berhasil keluar!");
-            window.location.reload();
+            // ALERT DI SINI SUDAH DIHAPUS TOTAL BIAR GA MUNCUL POP-UP GITHUB
+            window.location.reload(); 
         }
 
         document.addEventListener("DOMContentLoaded", function() {
