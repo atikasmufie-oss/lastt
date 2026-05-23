@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogIn</title>
+    <title>Masuk Akun</title>
     <style>
         /* ========================================================
-           KEMBALI KE CSS ASLI KAMU (FIX STRUKTUR & TIDAK MEPEET)
+           KEMBALI KE CSS ASLI KAMU (FIX STRUKTUR & TIDAK MEPET)
            ======================================================== */
         * { 
             margin: 0; 
@@ -16,7 +16,7 @@
         }
         
         body {
-            background-color: #a9cfff; /* Warna biru muda sesuai foto */
+            background-color: #a9cfff; 
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,8 +24,8 @@
         }
 
         .login-card {
-            background-color: #d2e6ff; /* Warna dasar kotak dalam sesuai foto */
-            padding: 60px 45px; /* Ditambah biar ruang atas bawah lega & ga mepet */
+            background-color: #d2e6ff; 
+            padding: 60px 45px; 
             border-radius: 30px; 
             width: 460px;
             text-align: center;
@@ -33,18 +33,18 @@
         }
 
         h2 { 
-            color: #2b569a; /* Warna biru tulisan judul */
+            color: #2b569a; 
             font-size: 32px;
-            margin-bottom: 40px; /* Jarak judul ke inputan lebih luas */
+            margin-bottom: 40px; 
             font-weight: 700;
         }
 
         input {
             width: 100%;
             padding: 18px 22px;
-            margin-bottom: 22px; /* Jarak antar inputan lega */
+            margin-bottom: 22px; 
             border: none;
-            background: #eef4fe; /* Warna inputan abu-biru muda */
+            background: #eef4fe; 
             border-radius: 12px;
             outline: none;
             color: #333;
@@ -58,7 +58,7 @@
         button {
             width: 100%;
             padding: 18px;
-            background-color: #4a90e2; /* Warna tombol biru asli */
+            background-color: #4a90e2; 
             border: none;
             color: white;
             font-weight: 700;
@@ -66,7 +66,7 @@
             border-radius: 12px;
             cursor: pointer;
             margin-top: 15px;
-            margin-bottom: 35px; /* Jarak tombol ke tulisan bawah */
+            margin-bottom: 35px; 
             transition: background 0.2s;
         }
 
@@ -98,7 +98,6 @@
             color: #000; 
         }
 
-        /* Teks info/error rapi di dalam form tanpa mengacaukan layout */
         .info-message {
             font-size: 14px;
             margin-top: -12px;
@@ -116,27 +115,27 @@
     <div class="login-card">
         
         <div id="loginSection">
-            <h2>LogIn ke akun anda</h2>
-            <input type="text" id="loginUser" placeholder="Username">
-            <input type="password" id="loginPass" placeholder="Password">
+            <h2>Masuk Akun</h2>
+            <input type="text" id="loginUser" placeholder="Masukkan Username">
+            <input type="password" id="loginPass" placeholder="Masukkan Password">
             
             <button onclick="prosesLogin()">Masuk</button>
             <div id="loginError" class="info-message msg-error">Username atau Password salah!</div>
             
-            <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar</span></p>
+            <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
         </div>
 
         <div id="registerSection" style="display: none;">
             <h2>Daftar Akun</h2>
-            <input type="text" id="regUser" placeholder="Username">
-            <input type="email" id="regEmail" placeholder="Email"> 
-            <input type="password" id="regPass" placeholder="Password">
+            <input type="text" id="regUser" placeholder="Buat Username Baru">
+            <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> 
+            <input type="password" id="regPass" placeholder="Buat Password Baru">
             
             <button onclick="prosesRegister()">Daftar</button>
-            <div id="regError" class="info-message msg-error">Diisi semua!</div>
-            <div id="regSuccess" class="info-message msg-success">Berhasil! Mengalihkan...</div>
+            <div id="regError" class="info-message msg-error">Semua form wajib diisi!</div>
+            <div id="regSuccess" class="info-message msg-success">Daftar berhasil! Mengalihkan ke login...</div>
             
-            <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login</span></p>
+            <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login di sini</span></p>
         </div>
 
         <a href="../index.html" class="back-link">← Kembali ke Awalan</a>
@@ -160,6 +159,7 @@
             }
         }
 
+        // FUNGSI DAFTAR (Menyimpan data permanen di browser)
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -173,9 +173,12 @@
                 return;
             }
 
+            // Menyimpan dengan banyak variasi nama agar COCOK dengan template lamamu
             localStorage.setItem("saved_username", user);
-            localStorage.setItem("saved_email", email); 
             localStorage.setItem("saved_password", pass);
+            localStorage.setItem("username", user);
+            localStorage.setItem("password", pass);
+            localStorage.setItem("email", email);
 
             document.getElementById("regUser").value = "";
             document.getElementById("regEmail").value = "";
@@ -184,22 +187,30 @@
             errBox.style.display = "none";
             successBox.style.display = "block";
             
-            // Jeda 1 detik biar user sadar kalau pendaftaran sukses, lalu pindah form otomatis tanpa alert
             setTimeout(pindahForm, 1000);
         }
 
+        // FUNGSI LOGIN (Mengecek segala kecocokan database lokal)
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
             const errBox = document.getElementById("loginError");
 
-            const dbUser = localStorage.getItem("saved_username");
-            const dbPass = localStorage.getItem("saved_password");
+            // Mengambil semua kemungkinan nama variabel dari template lama kamu
+            const dbUser1 = localStorage.getItem("saved_username");
+            const dbPass1 = localStorage.getItem("saved_password");
+            const dbUser2 = localStorage.getItem("username");
+            const dbPass2 = localStorage.getItem("password");
 
-            if (userMasuk === dbUser && passMasuk === dbPass && dbUser !== null) {
+            // Validasi apakah inputan cocok dengan salah satu database lokal diatas
+            const cocok1 = (userMasuk === dbUser1 && passMasuk === dbPass1 && dbUser1 !== null);
+            const cocok2 = (userMasuk === dbUser2 && passMasuk === dbPass2 && dbUser2 !== null);
+
+            if (cocok1 || cocok2) {
+                // Simpan session user aktif agar index.html tahu kamu sudah login
                 localStorage.setItem("loggedInUser", userMasuk);
                 
-                // LANGSUNG BALIK KE HALAMAN UTAMA (Tanpa Pop-up Alert sama sekali)
+                // Langsung balik ke landing page utama tanpa halangan
                 window.location.href = "../index.html"; 
             } else {
                 errBox.style.display = "block"; 
