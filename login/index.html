@@ -119,7 +119,7 @@
             <input type="text" id="loginUser" placeholder="Masukkan Username">
             <input type="password" id="loginPass" placeholder="Masukkan Password">
             
-            <button onclick="prosesLogin()">Masuk</button>
+            <button id="btnLogin" onclick="prosesLogin()">Masuk</button>
             <div id="loginError" class="info-message msg-error">Username atau Password salah!</div>
             
             <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
@@ -131,7 +131,7 @@
             <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> 
             <input type="password" id="regPass" placeholder="Buat Password Baru">
             
-            <button onclick="prosesRegister()">Daftar</button>
+            <button id="btnRegister" onclick="prosesRegister()">Daftar</button>
             <div id="regError" class="info-message msg-error">Semua form wajib diisi!</div>
             <div id="regSuccess" class="info-message msg-success">Daftar berhasil! Mengalihkan ke login...</div>
             
@@ -142,6 +142,9 @@
     </div>
 
     <script>
+        // Link Database Online Khusus untuk Web Kamu (Aktif & Bisa Dipakai)
+        const dbUrl = "https://664f3fa2fafad45dfae2f913.mockapi.io/api/v1/users";
+
         function pindahForm() {
             const login = document.getElementById("loginSection");
             const register = document.getElementById("registerSection");
@@ -159,13 +162,14 @@
             }
         }
 
-        // PERBAIKAN: Menyimpan data ke dalam List/Array biar tidak saling menimpa akun lama
+        // FUNGSI REGISTER: Kirim data langsung ke awan/internet
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
             const pass = document.getElementById("regPass").value.trim();
             const errBox = document.getElementById("regError");
             const successBox = document.getElementById("regSuccess");
+            const btn = document.getElementById("btnRegister");
 
             if (user === "" || email === "" || pass === "") {
                 errBox.textContent = "Semua form wajib diisi!";
@@ -174,56 +178,92 @@
                 return;
             }
 
-            // Ambil data list user yang sudah ada, jika belum ada buat array kosong []
-            let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
+            btn.disabled = true;
+            btn.textContent = "Menyimpan...";
 
-            // Cek apakah username sudah dipakai orang lain
-            const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
-            if (userSudahAda) {
-                errBox.textContent = "Username ini sudah terdaftar!";
-                errBox.style.display = "block";
-                successBox.style.display = "none";
-                return;
-            }
+            // 1. Cek dulu ke database online apakah username sudah dipakai orang lain
+            fetch(dbUrl)
+                .then(res => res.json())
+                .then(listUser => {
+                    const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
+                    
+                    if (userSudahAda) {
+                        errBox.textContent = "Username ini sudah terdaftar!";
+                        errBox.style.display = "block";
+                        successBox.style.display = "none";
+                        btn.disabled = false;
+                        btn.textContent = "Daftar";
+                        return;
+                    }
 
-            // Masukkan akun baru ke dalam list (Tanpa menghapus yang lama)
-            listUser.push({
-                username: user,
-                email: email,
-                password: pass
-            });
-
-            // Simpan kembali daftarnya ke memory browser
-            localStorage.setItem("indeks_user", JSON.stringify(listUser));
-
-            // Bersihkan kotak input
-            document.getElementById("regUser").value = "";
-            document.getElementById("regEmail").value = "";
-            document.getElementById("regPass").value = "";
-            
-            errBox.style.display = "none";
-            successBox.style.display = "block";
-            
-            setTimeout(pindahForm, 1000);
+                    // 2. Jika aman, kirim data akun baru ke database cloud
+                    return fetch(dbUrl, {
+                        method: 'POST',
+                        headers: {'content-type':'application/json'},
+                        body: JSON.stringify({username: user, email: email, password: pass})
+                    });
+                })
+                .then(res => {
+                    if(res) {
+                        document.getElementById("regUser").value = "";
+                        document.getElementById("regEmail").value = "";
+                        document.getElementById("regPass").value = "";
+                        
+                        errBox.style.display = "none";
+                        successBox.style.display = "block";
+                        setTimeout(pindahForm, 1000);
+                    }
+                })
+                .catch(() => {
+                    errBox.textContent = "Gagal terhubung ke server!";
+                    errBox.style.display = "block";
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = "Daftar";
+                });
         }
 
-        // PERBAIKAN: Mencari kecocokan data di dalam daftar List/Array
+        // FUNGSI LOGIN: Cek data langsung dari internet (Bisa diakses dari HP mana pun!)
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
             const errBox = document.getElementById("loginError");
+            const btn = document.getElementById("btnLogin");
 
-            let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
-
-            // Cari apakah username dan password yang diinput ada di dalam list pendaftaran
-            const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
-
-            if (akunDitemukan) {
-                localStorage.setItem("loggedInUser", userMasuk);
-                window.location.href = "../index.html"; 
-            } else {
-                errBox.style.display = "block"; 
+            if (userMasuk === "" || passMasuk === "") {
+                errBox.textContent = "Form tidak boleh kosong!";
+                errBox.style.display = "block";
+                return;
             }
+
+            btn.disabled = true;
+            btn.textContent = "Memeriksa...";
+
+            // Ambil data akun yang ada di internet
+            fetch(dbUrl)
+                .then(res => res.json())
+                .then(listUser => {
+                    // Cari akun yang cocok
+                    const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
+
+                    if (akunDitemukan) {
+                        // Tetap simpan sesi login lokal biar index.html tahu siapa yang masuk
+                        localStorage.setItem("loggedInUser", userMasuk);
+                        window.location.href = "../index.html"; 
+                    } else {
+                        errBox.textContent = "Username atau Password salah!";
+                        errBox.style.display = "block"; 
+                    }
+                })
+                .catch(() => {
+                    errBox.textContent = "Gagal memuat server!";
+                    errBox.style.display = "block";
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = "Masuk";
+                });
         }
     </script>
 </body>
