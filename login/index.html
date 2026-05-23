@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk Akun</title>
+    <title>LogIn</title>
     <style>
         /* ========================================================
            CSS ASLI KAMU (FIX STRUKTUR & TIDAK MEPET)
@@ -115,30 +115,30 @@
     <div class="login-card">
         
         <div id="loginSection">
-            <h2>Masuk Akun</h2>
-            <input type="text" id="loginUser" placeholder="Masukkan Username">
-            <input type="password" id="loginPass" placeholder="Masukkan Password">
+            <h2>Masuk ke akun anda</h2>
+            <input type="text" id="loginUser" placeholder="Username">
+            <input type="password" id="loginPass" placeholder="Password">
             
             <button onclick="prosesLogin()">Masuk</button>
-            <div id="loginError" class="info-message msg-error">Username atau Password salah!</div>
+            <div id="loginError" class="info-message msg-error">Salah!</div>
             
-            <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
+            <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar</span></p>
         </div>
 
         <div id="registerSection" style="display: none;">
             <h2>Daftar Akun</h2>
-            <input type="text" id="regUser" placeholder="Buat Username Baru">
-            <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> 
-            <input type="password" id="regPass" placeholder="Buat Password Baru">
+            <input type="text" id="regUser" placeholder="Username">
+            <input type="email" id="regEmail" placeholder="Email"> 
+            <input type="password" id="regPass" placeholder="Password">
             
             <button onclick="prosesRegister()">Daftar</button>
-            <div id="regError" class="info-message msg-error">Semua form wajib diisi!</div>
-            <div id="regSuccess" class="info-message msg-success">Daftar berhasil! Mengalihkan ke login...</div>
+            <div id="regError" class="info-message msg-error">Diisi!</div>
+            <div id="regSuccess" class="info-message msg-success">Berhasil! Mengalihkan...</div>
             
-            <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login di sini</span></p>
+            <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login</span></p>
         </div>
 
-        <a href="../index.html" class="back-link">← Kembali ke Awalan</a>
+        <a href="../index.html" class="back-link">← Awalan</a>
     </div>
 
     <script>
@@ -168,7 +168,7 @@
             const successBox = document.getElementById("regSuccess");
 
             if (user === "" || email === "" || pass === "") {
-                errBox.textContent = "Semua form wajib diisi!";
+                errBox.textContent = "Diisi!";
                 errBox.style.display = "block";
                 successBox.style.display = "none";
                 return;
