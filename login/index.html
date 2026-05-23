@@ -119,7 +119,7 @@
             <input type="text" id="loginUser" placeholder="Masukkan Username">
             <input type="password" id="loginPass" placeholder="Masukkan Password">
             
-            <button id="btnLogin" onclick="prosesLogin()">Masuk</button>
+            <button onclick="prosesLogin()">Masuk</button>
             <div id="loginError" class="info-message msg-error">Username atau Password salah!</div>
             
             <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
@@ -131,7 +131,7 @@
             <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> 
             <input type="password" id="regPass" placeholder="Buat Password Baru">
             
-            <button id="btnRegister" onclick="prosesRegister()">Daftar</button>
+            <button onclick="prosesRegister()">Daftar</button>
             <div id="regError" class="info-message msg-error">Semua form wajib diisi!</div>
             <div id="regSuccess" class="info-message msg-success">Daftar berhasil! Mengalihkan ke login...</div>
             
@@ -142,9 +142,6 @@
     </div>
 
     <script>
-        // Menggunakan npoint jaminan data kesimpan permanen dan bisa diakses hp & laptop langsung
-        const dbUrl = "https://api.npoint.io/61b7fcf76bfbc48622c8";
-
         function pindahForm() {
             const login = document.getElementById("loginSection");
             const register = document.getElementById("registerSection");
@@ -162,14 +159,13 @@
             }
         }
 
-        // FUNGSI REGISTER
+        // FUNGSI REGISTER: Menyimpan banyak akun sekaligus di list array
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
             const pass = document.getElementById("regPass").value.trim();
             const errBox = document.getElementById("regError");
             const successBox = document.getElementById("regSuccess");
-            const btn = document.getElementById("btnRegister");
 
             if (user === "" || email === "" || pass === "") {
                 errBox.textContent = "Semua form wajib diisi!";
@@ -178,92 +174,60 @@
                 return;
             }
 
-            btn.disabled = true;
-            btn.textContent = "Menyimpan...";
+            // Ambil daftar user lama dari localStorage, kalau belum ada buat array kosong []
+            let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
 
-            fetch(dbUrl)
-                .then(res => res.json())
-                .then(data => {
-                    let listUser = data.users || [];
+            // CEK: Apakah username sudah pernah dipakai orang lain?
+            const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
+            if (userSudahAda) {
+                errBox.textContent = "Username ini sudah terdaftar!";
+                errBox.style.display = "block";
+                successBox.style.display = "none";
+                return;
+            }
 
-                    const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
-                    if (userSudahAda) {
-                        errBox.textContent = "Username ini sudah terdaftar!";
-                        errBox.style.display = "block";
-                        successBox.style.display = "none";
-                        btn.disabled = false;
-                        btn.textContent = "Daftar";
-                        return;
-                    }
+            // Gabungkan data akun baru ke list
+            listUser.push({
+                username: user,
+                email: email,
+                password: pass
+            });
 
-                    listUser.push({ username: user, email: email, password: pass });
+            // Simpan kembali list akun yang baru ke localStorage browser
+            localStorage.setItem("indeks_user", JSON.stringify(listUser));
 
-                    return fetch(dbUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ users: listUser })
-                    });
-                })
-                .then(res => {
-                    if (res) {
-                        document.getElementById("regUser").value = "";
-                        document.getElementById("regEmail").value = "";
-                        document.getElementById("regPass").value = "";
-                        
-                        errBox.style.display = "none";
-                        successBox.style.display = "block";
-                        setTimeout(pindahForm, 1000);
-                    }
-                })
-                .catch(() => {
-                    errBox.textContent = "Gagal terhubung ke database internet!";
-                    errBox.style.display = "block";
-                })
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.textContent = "Daftar";
-                });
+            // Kosongkan form input pendaftaran
+            document.getElementById("regUser").value = "";
+            document.getElementById("regEmail").value = "";
+            document.getElementById("regPass").value = "";
+            
+            errBox.style.display = "none";
+            successBox.style.display = "block";
+            
+            setTimeout(pindahForm, 1000);
         }
 
-        // FUNGSI LOGIN
+        // FUNGSI LOGIN: Mencari username & password di dalam database list array
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
             const errBox = document.getElementById("loginError");
-            const btn = document.getElementById("btnLogin");
 
-            if (userMasuk === "" || passMasuk === "") {
-                errBox.textContent = "Form tidak boleh kosong!";
-                errBox.style.display = "block";
-                return;
+            // Ambil data list akun yang terdaftar
+            let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
+
+            // Cari apakah ada username dan password yang cocok di dalam database array
+            const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
+
+            if (akunDitemukan) {
+                // Simpan siapa user yang sedang aktif agar dibaca index.html halaman depan
+                localStorage.setItem("loggedInUser", userMasuk);
+                
+                // Pindah balik ke landing page utama secara silent & mulus
+                window.location.href = "../index.html"; 
+            } else {
+                errBox.style.display = "block"; 
             }
-
-            btn.disabled = true;
-            btn.textContent = "Memeriksa...";
-
-            fetch(dbUrl)
-                .then(res => res.json())
-                .then(data => {
-                    let listUser = data.users || [];
-
-                    const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
-
-                    if (akunDitemukan) {
-                        localStorage.setItem("loggedInUser", userMasuk);
-                        window.location.href = "../index.html"; 
-                    } else {
-                        errBox.textContent = "Username atau Password salah!";
-                        errBox.style.display = "block"; 
-                    }
-                })
-                .catch(() => {
-                    errBox.textContent = "Gagal memuat database internet!";
-                    errBox.style.display = "block";
-                })
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.textContent = "Masuk";
-                });
         }
     </script>
 </body>
