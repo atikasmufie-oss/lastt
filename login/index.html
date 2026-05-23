@@ -159,7 +159,7 @@
             }
         }
 
-        // FUNGSI REGISTER: Menyimpan banyak akun sekaligus di list array
+        // PERBAIKAN: Menyimpan data ke dalam List/Array biar tidak saling menimpa akun lama
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -174,10 +174,10 @@
                 return;
             }
 
-            // Ambil daftar user lama dari localStorage, kalau belum ada buat array kosong []
+            // Ambil data list user yang sudah ada, jika belum ada buat array kosong []
             let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
 
-            // CEK: Apakah username sudah pernah dipakai orang lain?
+            // Cek apakah username sudah dipakai orang lain
             const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
             if (userSudahAda) {
                 errBox.textContent = "Username ini sudah terdaftar!";
@@ -186,17 +186,17 @@
                 return;
             }
 
-            // Gabungkan data akun baru ke list
+            // Masukkan akun baru ke dalam list (Tanpa menghapus yang lama)
             listUser.push({
                 username: user,
                 email: email,
                 password: pass
             });
 
-            // Simpan kembali list akun yang baru ke localStorage browser
+            // Simpan kembali daftarnya ke memory browser
             localStorage.setItem("indeks_user", JSON.stringify(listUser));
 
-            // Kosongkan form input pendaftaran
+            // Bersihkan kotak input
             document.getElementById("regUser").value = "";
             document.getElementById("regEmail").value = "";
             document.getElementById("regPass").value = "";
@@ -207,23 +207,19 @@
             setTimeout(pindahForm, 1000);
         }
 
-        // FUNGSI LOGIN: Mencari username & password di dalam database list array
+        // PERBAIKAN: Mencari kecocokan data di dalam daftar List/Array
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
             const errBox = document.getElementById("loginError");
 
-            // Ambil data list akun yang terdaftar
             let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
 
-            // Cari apakah ada username dan password yang cocok di dalam database array
+            // Cari apakah username dan password yang diinput ada di dalam list pendaftaran
             const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
 
             if (akunDitemukan) {
-                // Simpan siapa user yang sedang aktif agar dibaca index.html halaman depan
                 localStorage.setItem("loggedInUser", userMasuk);
-                
-                // Pindah balik ke landing page utama secara silent & mulus
                 window.location.href = "../index.html"; 
             } else {
                 errBox.style.display = "block"; 
