@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk ke Akun</title>
+    <title>Masuk Akun</title>
     <style>
-        
-        { 
+        /* ========================================================
+           KEMBALI KE CSS ASLI KAMU (FIX STRUKTUR & TIDAK MEPEET)
+           ======================================================== */
+        * { 
             margin: 0; 
             padding: 0; 
             box-sizing: border-box; 
@@ -14,7 +16,7 @@
         }
         
         body {
-            background-color: #a9cfff; /* Biru muda background asli */
+            background-color: #a9cfff; /* Warna biru muda sesuai foto */
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,30 +24,28 @@
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.5); /* Efek kaca transparan asli */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 50px 40px;
-            border-radius: 24px; /* Sudut kotak rounded lembut */
-            width: 440px;
+            background-color: #d2e6ff; /* Warna dasar kotak dalam sesuai foto */
+            padding: 60px 45px; /* Ditambah biar ruang atas bawah lega & ga mepet */
+            border-radius: 30px; 
+            width: 460px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         h2 { 
-            color: #2c5282; 
-            font-size: 28px;
-            margin-bottom: 35px; 
+            color: #2b569a; /* Warna biru tulisan judul */
+            font-size: 32px;
+            margin-bottom: 40px; /* Jarak judul ke inputan lebih luas */
             font-weight: 700;
         }
 
         input {
             width: 100%;
-            padding: 16px 20px;
-            margin-bottom: 20px;
+            padding: 18px 22px;
+            margin-bottom: 22px; /* Jarak antar inputan lega */
             border: none;
-            background: #eef4fe; /* Warna abu-biru inputan asli */
-            border-radius: 10px;
+            background: #eef4fe; /* Warna inputan abu-biru muda */
+            border-radius: 12px;
             outline: none;
             color: #333;
             font-size: 16px;
@@ -57,16 +57,16 @@
 
         button {
             width: 100%;
-            padding: 16px;
-            background-color: #4a90e2; /* Biru cerah tombol Masuk asli */
+            padding: 18px;
+            background-color: #4a90e2; /* Warna tombol biru asli */
             border: none;
             color: white;
             font-weight: 700;
             font-size: 18px;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             margin-top: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 35px; /* Jarak tombol ke tulisan bawah */
             transition: background 0.2s;
         }
 
@@ -75,9 +75,9 @@
         }
 
         .switch-text { 
-            font-size: 15px; 
+            font-size: 16px; 
             color: #4a5568; 
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .switch-text span { 
@@ -89,7 +89,7 @@
 
         .back-link { 
             display: inline-block; 
-            font-size: 15px; 
+            font-size: 16px; 
             color: #4a5568; 
             text-decoration: none; 
         }
@@ -98,15 +98,17 @@
             color: #000; 
         }
 
-        /* Pesan peringatan merah pengganti alert */
-        .error-message {
-            color: #e53e3e;
+        /* Teks info/error rapi di dalam form tanpa mengacaukan layout */
+        .info-message {
             font-size: 14px;
-            margin-top: -10px;
+            margin-top: -12px;
             margin-bottom: 15px;
             display: none;
             font-weight: 600;
+            text-align: center;
         }
+        .msg-error { color: #e53e3e; }
+        .msg-success { color: #2f855a; }
     </style>
 </head>
 <body>
@@ -119,7 +121,7 @@
             <input type="password" id="loginPass" placeholder="Masukkan Password">
             
             <button onclick="prosesLogin()">Masuk</button>
-            <div id="loginError" class="error-message">Username atau Password salah!</div>
+            <div id="loginError" class="info-message msg-error">Username atau Password salah!</div>
             
             <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
         </div>
@@ -127,10 +129,12 @@
         <div id="registerSection" style="display: none;">
             <h2>Daftar Akun</h2>
             <input type="text" id="regUser" placeholder="Buat Username Baru">
-            <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> <input type="password" id="regPass" placeholder="Buat Password Baru">
+            <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> 
+            <input type="password" id="regPass" placeholder="Buat Password Baru">
             
             <button onclick="prosesRegister()">Daftar</button>
-            <div id="regError" class="error-message">Semua form wajib diisi!</div>
+            <div id="regError" class="info-message msg-error">Semua form wajib diisi!</div>
+            <div id="regSuccess" class="info-message msg-success">Daftar berhasil! Mengalihkan ke login...</div>
             
             <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login di sini</span></p>
         </div>
@@ -139,13 +143,13 @@
     </div>
 
     <script>
-        // Fungsi tukar form login & register
         function pindahForm() {
             const login = document.getElementById("loginSection");
             const register = document.getElementById("registerSection");
             
             document.getElementById("loginError").style.display = "none";
             document.getElementById("regError").style.display = "none";
+            document.getElementById("regSuccess").style.display = "none";
 
             if (login.style.display === "none") {
                 login.style.display = "block";
@@ -156,34 +160,34 @@
             }
         }
 
-        // Fungsi Daftar Akun Baru + Menyimpan Email
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
             const pass = document.getElementById("regPass").value.trim();
             const errBox = document.getElementById("regError");
+            const successBox = document.getElementById("regSuccess");
 
-            // Cek kalau ada inputan yang kosong
             if (user === "" || email === "" || pass === "") {
                 errBox.style.display = "block";
+                successBox.style.display = "none";
                 return;
             }
 
-            // Simpan data pendaftaran ke browser
             localStorage.setItem("saved_username", user);
-            localStorage.setItem("saved_email", email); // Email tersimpan aman
+            localStorage.setItem("saved_email", email); 
             localStorage.setItem("saved_password", pass);
 
-            // Kosongkan form input
             document.getElementById("regUser").value = "";
             document.getElementById("regEmail").value = "";
             document.getElementById("regPass").value = "";
             
-            // Pindah ke form login otomatis tanpa pop-up mengganggu
-            pindahForm();
+            errBox.style.display = "none";
+            successBox.style.display = "block";
+            
+            // Jeda 1 detik biar user sadar kalau pendaftaran sukses, lalu pindah form otomatis tanpa alert
+            setTimeout(pindahForm, 1000);
         }
 
-        // Fungsi Login & Otomatis Balik ke Layar Utama Kobo
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
@@ -193,13 +197,12 @@
             const dbPass = localStorage.getItem("saved_password");
 
             if (userMasuk === dbUser && passMasuk === dbPass && dbUser !== null) {
-                // Beritahu index.html siapa nama user yang login
                 localStorage.setItem("loggedInUser", userMasuk);
                 
-                // LANGSUNG BALIK KE HALAMAN UTAMA (Silent & Mulus)
+                // LANGSUNG BALIK KE HALAMAN UTAMA (Tanpa Pop-up Alert sama sekali)
                 window.location.href = "../index.html"; 
             } else {
-                errBox.style.display = "block"; // Muncul teks merah kalau salah
+                errBox.style.display = "block"; 
             }
         }
     </script>
