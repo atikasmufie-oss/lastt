@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Masuk Akun</title>
     <style>
         /* ========================================================
-           KEMBALI KE CSS ASLI KAMU (FIX STRUKTUR & TIDAK MEPET)
+           CSS ASLI KAMU (FIX STRUKTUR & TIDAK MEPET)
            ======================================================== */
         * { 
             margin: 0; 
@@ -115,30 +115,30 @@
     <div class="login-card">
         
         <div id="loginSection">
-            <h2>Login ke akun</h2>
-            <input type="text" id="loginUser" placeholder="Username">
-            <input type="password" id="loginPass" placeholder="Password">
+            <h2>Masuk Akun</h2>
+            <input type="text" id="loginUser" placeholder="Masukkan Username">
+            <input type="password" id="loginPass" placeholder="Masukkan Password">
             
             <button onclick="prosesLogin()">Masuk</button>
             <div id="loginError" class="info-message msg-error">Username atau Password salah!</div>
             
-            <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar</span></p>
+            <p class="switch-text">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
         </div>
 
         <div id="registerSection" style="display: none;">
-            <h2>Daftar</h2>
-            <input type="text" id="regUser" placeholder="Username">
-            <input type="email" id="regEmail" placeholder="Email"> 
-            <input type="password" id="regPass" placeholder="Password">
+            <h2>Daftar Akun</h2>
+            <input type="text" id="regUser" placeholder="Buat Username Baru">
+            <input type="email" id="regEmail" placeholder="Masukkan Alamat Email"> 
+            <input type="password" id="regPass" placeholder="Buat Password Baru">
             
             <button onclick="prosesRegister()">Daftar</button>
             <div id="regError" class="info-message msg-error">Semua form wajib diisi!</div>
-            <div id="regSuccess" class="info-message msg-success">Berhasil! Mengalihkan...</div>
+            <div id="regSuccess" class="info-message msg-success">Daftar berhasil! Mengalihkan ke login...</div>
             
-            <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login</span></p>
+            <p class="switch-text">Sudah punya akun? <span onclick="pindahForm()">Login di sini</span></p>
         </div>
 
-        <a href="../index.html" class="back-link">←Awalan</a>
+        <a href="../index.html" class="back-link">← Kembali ke Awalan</a>
     </div>
 
     <script>
@@ -159,7 +159,7 @@
             }
         }
 
-        // FUNGSI DAFTAR (Menyimpan data permanen di browser)
+        // FUNGSI REGISTER: Menyimpan banyak akun sekaligus di list array
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -168,18 +168,35 @@
             const successBox = document.getElementById("regSuccess");
 
             if (user === "" || email === "" || pass === "") {
+                errBox.textContent = "Semua form wajib diisi!";
                 errBox.style.display = "block";
                 successBox.style.display = "none";
                 return;
             }
 
-            // Menyimpan dengan banyak variasi nama agar COCOK dengan template lamamu
-            localStorage.setItem("saved_username", user);
-            localStorage.setItem("saved_password", pass);
-            localStorage.setItem("username", user);
-            localStorage.setItem("password", pass);
-            localStorage.setItem("email", email);
+            // Ambil daftar user lama dari localStorage, kalau belum ada buat array kosong []
+            let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
 
+            // CEK: Apakah username sudah pernah dipakai orang lain?
+            const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
+            if (userSudahAda) {
+                errBox.textContent = "Username ini sudah terdaftar!";
+                errBox.style.display = "block";
+                successBox.style.display = "none";
+                return;
+            }
+
+            // Gabungkan data akun baru ke list
+            listUser.push({
+                username: user,
+                email: email,
+                password: pass
+            });
+
+            // Simpan kembali list akun yang baru ke localStorage browser
+            localStorage.setItem("indeks_user", JSON.stringify(listUser));
+
+            // Kosongkan form input pendaftaran
             document.getElementById("regUser").value = "";
             document.getElementById("regEmail").value = "";
             document.getElementById("regPass").value = "";
@@ -190,27 +207,23 @@
             setTimeout(pindahForm, 1000);
         }
 
-        // FUNGSI LOGIN (Mengecek segala kecocokan database lokal)
+        // FUNGSI LOGIN: Mencari username & password di dalam database list array
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
             const errBox = document.getElementById("loginError");
 
-            // Mengambil semua kemungkinan nama variabel dari template lama kamu
-            const dbUser1 = localStorage.getItem("saved_username");
-            const dbPass1 = localStorage.getItem("saved_password");
-            const dbUser2 = localStorage.getItem("username");
-            const dbPass2 = localStorage.getItem("password");
+            // Ambil data list akun yang terdaftar
+            let listUser = JSON.parse(localStorage.getItem("indeks_user")) || [];
 
-            // Validasi apakah inputan cocok dengan salah satu database lokal diatas
-            const cocok1 = (userMasuk === dbUser1 && passMasuk === dbPass1 && dbUser1 !== null);
-            const cocok2 = (userMasuk === dbUser2 && passMasuk === dbPass2 && dbUser2 !== null);
+            // Cari apakah ada username dan password yang cocok di dalam database array
+            const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
 
-            if (cocok1 || cocok2) {
-                // Simpan session user aktif agar index.html tahu kamu sudah login
+            if (akunDitemukan) {
+                // Simpan siapa user yang sedang aktif agar dibaca index.html halaman depan
                 localStorage.setItem("loggedInUser", userMasuk);
                 
-                // Langsung balik ke landing page utama tanpa halangan
+                // Pindah balik ke landing page utama secara silent & mulus
                 window.location.href = "../index.html"; 
             } else {
                 errBox.style.display = "block"; 
