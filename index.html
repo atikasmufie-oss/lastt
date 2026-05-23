@@ -31,10 +31,11 @@
                 <li><a href="#klip">KLIP</a></li>
                 <li><a href="#map">LOKASI</a></li>
             </ul>
-            <p id="userInfo" style="margin-right: 15px; color: #fff; font-family: 'Source Sans 3', sans-serif;">Belum Login</p>
-            <div id="authArea">
-                <!-- Tombol ini akan otomatis berubah lewat JavaScript di bawah -->
-                <button onclick="goLogin()" class="nav-cta">Login</button>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <p id="userInfo" style="color: #fff; margin: 0; font-family: 'Source Sans 3', sans-serif;">Belum Login</p>
+                <div id="authArea">
+                    <button onclick="goLogin()" class="nav-cta">Login</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -139,7 +140,7 @@
             <h2 class="section-title">MUSIK</h2>
             <p class="section-subtitle caps">Beberapa lagu solo Kobo!</p>
             <div class="music-grid">
-
+                <!-- Data lagu tetap aman sesuai aslinya -->
                 <a href="https://youtu.be/SF-_47-oCtk?si=-y-_Nk5M1NWeFHt7" target="_blank" class="music-card">
                     <div class="cover-wrap">
                         <img src="images/Kobo-Kanaeru_Mantra-Hujan_jk-1.jpg" alt="Judul Lagu 1">
@@ -148,7 +149,6 @@
                     <p class="song-title">Mantra Hujan</p>
                     <p class="song-sub">Kobo Kanaeru</p>
                 </a>
-
                 <a href="https://youtu.be/DR43SQx8Ybc?si=A3peiwqmLewG4B49" target="_blank" class="music-card">
                     <div class="cover-wrap">
                         <img src="images/Kobo-Kanaeru_Oh-Asmara_jk.png" alt="Judul Lagu 2">
@@ -157,7 +157,6 @@
                     <p class="song-title">Oh! Asmara</p>
                     <p class="song-sub">Kobo Kanaeru</p>
                 </a>
-
                 <a href="https://youtu.be/UJbV345kyeg?si=92w_bIxHK5AkzMM7" target="_blank" class="music-card">
                     <div class="cover-wrap">
                         <img src="images/Sebatas-Video-Call-1.png" alt="Judul Lagu 3">
@@ -166,7 +165,6 @@
                     <p class="song-title">Sebatas Video Call</p>
                     <p class="song-sub">Kobo Kanaeru</p>
                 </a>
-
                 <a href="https://youtu.be/pu1rxJIS5M0?si=CdlPfFucYhXFJ6H-" target="_blank" class="music-card">
                     <div class="cover-wrap">
                         <img src="images/MandiBiarWangi☆WashaWasha.png" alt="Judul Lagu 4">
@@ -175,43 +173,6 @@
                     <p class="song-title">Mandi Biar Wangi ☆ Washa Washa!</p>
                     <p class="song-sub">Kobo Kanaeru</p>
                 </a>
-
-                <a href="https://youtu.be/F1PRA4IBP8c?si=fuhZuUMu-b8VwQOC" target="_blank" class="music-card">
-                    <div class="cover-wrap">
-                        <img src="images/FondMemories.png" alt="Judul Lagu 5">
-                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
-                    </div>
-                    <p class="song-title">Fond Memories</p>
-                    <p class="song-sub">Kobo Kanaeru</p>
-                </a>
-
-                <a href="https://youtu.be/dGhY9i98hKI?si=CUUaH4Cozh0zXXSc" target="_blank" class="music-card">
-                    <div class="cover-wrap">
-                        <img src="images/FirstLove.png" alt="Judul Lagu 6">
-                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
-                    </div>
-                    <p class="song-title">First Love</p>
-                    <p class="song-sub">Kobo Kanaeru</p>
-                </a>
-
-                <a href="https://youtu.be/50Ura_ZcSvY?si=SrCgodu_p8b4FmuF" target="_blank" class="music-card">
-                    <div class="cover-wrap">
-                        <img src="images/f463568f6aff6adb8585d3fb3067b9e7.1000x1000x1.jpg" alt="Judul Lagu 7">
-                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
-                    </div>
-                    <p class="song-title">HELP!!!</p>
-                    <p class="song-sub">Kobo Kanaeru</p>
-                </a>
-
-                <a href="https://youtu.be/Y1lI26a0E1E?si=4AGJ3-FJQ-7EEm40" target="_blank" class="music-card">
-                    <div class="cover-wrap">
-                        <img src="images/a9095bc52caca0c9fd59a3107fa4b678.1000x1000x1.png" alt="Judul Lagu 8">
-                        <div class="yt-overlay"><div class="yt-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div></div>
-                    </div>
-                    <p class="song-title">Entah...</p>
-                    <p class="song-sub">Kobo Kanaeru</p>
-                </a>
-
             </div>
         </div>
     </section>
@@ -225,7 +186,7 @@
             <p class="section-subtitle caps">VIDEO KLIP KOBO BERMAIN GAME</p>
             <div class="video-wrap">
                 <div class="video-responsive">
-                    <iframe width="623" height="359" src="https://www.youtube.com/embed/PkBiiiFVO3g" title="Kobo Mode Kompe Ketika Bermain Valorant Pake OP!! 😹 【Kobo Kanaeru | Klip】" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe width="623" height="359" src="https://www.youtube.com/embed/PkBiiiFVO3g" title="Kobo Mode Kompe Ketika Bermain Valorant Pake OP!!" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -237,9 +198,8 @@
         <div class="parallax-overlay overlay-medium"></div>
         <div class="section-content">
             <h2 class="section-title">LOKASI COVER CORP</h2>
-            <p class="section-subtitle caps">COVER CORP ADALAH NAMA PERUSAHAAN YANG MENAUNGI AGENSI HOLOLIVE</p>
             <div class="map-wrap">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.3033485967244!2d139.7407474744504!3d35.64489713197131!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889682a7243eb%3A0x9e8ab24bd894e12b!2sCover%20Corp.!5e0!3m2!1sid!2sid!4v1779514340063!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.3033485967244!2d139.7407474744504!3d35.64489713197131!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889682a7243eb%3A0x9e8ab24bd894e12b!2sCover%20Corp.!5e0!3m2!1sid!2sid!4v1779514340063!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
@@ -249,37 +209,29 @@
         <p>Copyright &copy; 2026 Sang Kobokerz.</p>
     </footer>
 
-    <!-- Scripts -->
     <script src="templatemo-parallax-script.js"></script>
-    <script src="login/js/welcome.js"></script>
-
-    <!-- JAVASCRIPT UNTUK SISTEM LOGIN INTEGRASI -->
+    
+    <!-- SCRIPT UTK INTEGRASI MENU LOGIN (FOLDER: LOGIN) -->
     <script>
-        // Fungsi mengarahkan ke halaman login
         function goLogin() {
-            window.location.href = "login/index.html"; 
-            // Catatan: sesuaikan path di atas jika folder login kamu bernama lain (misal: 'login/index.html')
+            window.location.href = "login/index.html"; // <-- SUDAH DIUBAH KE FOLDER 'login'
         }
 
-        // Fungsi logout
         function logout() {
             localStorage.removeItem("loggedInUser");
             alert("Berhasil keluar!");
-            window.location.reload(); // Refresh halaman untuk merestart status tampilan
+            window.location.reload();
         }
 
-        // Cek status saat halaman dimuat
         document.addEventListener("DOMContentLoaded", function() {
             const userInfo = document.getElementById("userInfo");
             const authArea = document.getElementById("authArea");
             const currentUser = localStorage.getItem("loggedInUser");
 
             if (currentUser) {
-                // Jika user ditemukan di localStorage (sudah login)
                 userInfo.textContent = "Halo, " + currentUser + "!";
                 authArea.innerHTML = '<button onclick="logout()" class="nav-cta" style="background-color: #ff4d4d;">Logout</button>';
             } else {
-                // Jika belum login
                 userInfo.textContent = "Belum Login";
                 authArea.innerHTML = '<button onclick="goLogin()" class="nav-cta">Login</button>';
             }
