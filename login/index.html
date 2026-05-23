@@ -142,8 +142,8 @@
     </div>
 
     <script>
-        // Link Database Online Khusus untuk Web Kamu (Aktif & Bisa Dipakai)
-        const dbUrl = "https://664f3fa2fafad45dfae2f913.mockapi.io/api/v1/users";
+        // Server Cloud Google Firebase Realtime (Stabil & Anti-Blokir Device)
+        const dbUrl = "https://kobologin-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
 
         function pindahForm() {
             const login = document.getElementById("loginSection");
@@ -162,7 +162,7 @@
             }
         }
 
-        // FUNGSI REGISTER: Kirim data langsung ke awan/internet
+        // FUNGSI REGISTER: Simpan langsung ke awan Google
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -181,10 +181,16 @@
             btn.disabled = true;
             btn.textContent = "Menyimpan...";
 
-            // 1. Cek dulu ke database online apakah username sudah dipakai orang lain
+            // 1. Cek dulu apakah username sudah ada di database online Google
             fetch(dbUrl)
                 .then(res => res.json())
-                .then(listUser => {
+                .then(data => {
+                    // Jika database masih kosong melompong
+                    let listUser = [];
+                    if (data) {
+                        listUser = Object.values(data);
+                    }
+
                     const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
                     
                     if (userSudahAda) {
@@ -196,7 +202,7 @@
                         return;
                     }
 
-                    // 2. Jika aman, kirim data akun baru ke database cloud
+                    // 2. Kirim data akun baru ke server Google Firebase
                     return fetch(dbUrl, {
                         method: 'POST',
                         headers: {'content-type':'application/json'},
@@ -215,7 +221,7 @@
                     }
                 })
                 .catch(() => {
-                    errBox.textContent = "Gagal terhubung ke server!";
+                    errBox.textContent = "Gagal terhubung ke server cloud!";
                     errBox.style.display = "block";
                 })
                 .finally(() => {
@@ -224,7 +230,7 @@
                 });
         }
 
-        // FUNGSI LOGIN: Cek data langsung dari internet (Bisa diakses dari HP mana pun!)
+        // FUNGSI LOGIN: Cek data langsung dari Google Firebase (Aman diakses semua HP & Laptop)
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
@@ -240,15 +246,18 @@
             btn.disabled = true;
             btn.textContent = "Memeriksa...";
 
-            // Ambil data akun yang ada di internet
             fetch(dbUrl)
                 .then(res => res.json())
-                .then(listUser => {
-                    // Cari akun yang cocok
+                .then(data => {
+                    let listUser = [];
+                    if (data) {
+                        listUser = Object.values(data);
+                    }
+
+                    // Cari akun yang cocok di database online
                     const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
 
                     if (akunDitemukan) {
-                        // Tetap simpan sesi login lokal biar index.html tahu siapa yang masuk
                         localStorage.setItem("loggedInUser", userMasuk);
                         window.location.href = "../index.html"; 
                     } else {
@@ -257,7 +266,7 @@
                     }
                 })
                 .catch(() => {
-                    errBox.textContent = "Gagal memuat server!";
+                    errBox.textContent = "Gagal memuat server cloud!";
                     errBox.style.display = "block";
                 })
                 .finally(() => {
