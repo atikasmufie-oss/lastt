@@ -190,3 +190,8 @@ https://templatemo.com/tm-612-parallax-starter
     }
 
 })();
+
+function goLogin() {
+    // Contoh mengarahkan ke halaman login
+    window.location.href = "login/index.html"; 
+}
