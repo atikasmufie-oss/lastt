@@ -700,3 +700,11 @@ img {
     border-radius: 8px;
     overflow: hidden;
 }
+
+#templatemo-nav {
+    position: fixed; /* atau relative/absolute tergantung desainmu */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999 !important; /* Angka besar supaya di paling depan */
+}
