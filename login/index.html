@@ -142,8 +142,8 @@
     </div>
 
     <script>
-        // Server Cloud Google Firebase Realtime (Stabil & Anti-Blokir Device)
-        const dbUrl = "https://kobologin-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
+        // Database publik yang anti-blokir dan bisa diakses lancar dari HP / Laptop mana saja
+        const dbUrl = "https://kvdb.io/MN88Y3S89gB682L3bA764t/akun_kobo";
 
         function pindahForm() {
             const login = document.getElementById("loginSection");
@@ -162,7 +162,7 @@
             }
         }
 
-        // FUNGSI REGISTER: Simpan langsung ke awan Google
+        // FUNGSI DAFTAR
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -181,18 +181,17 @@
             btn.disabled = true;
             btn.textContent = "Menyimpan...";
 
-            // 1. Cek dulu apakah username sudah ada di database online Google
+            // Ambil daftar user yang sudah ada di cloud
             fetch(dbUrl)
-                .then(res => res.json())
-                .then(data => {
-                    // Jika database masih kosong melompong
-                    let listUser = [];
-                    if (data) {
-                        listUser = Object.values(data);
-                    }
+                .then(res => {
+                    if (!res.ok) return []; // jika database masih kosong
+                    return res.json();
+                })
+                .then(listUser => {
+                    if (!Array.isArray(listUser)) listUser = [];
 
+                    // Cek duplikat username
                     const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
-                    
                     if (userSudahAda) {
                         errBox.textContent = "Username ini sudah terdaftar!";
                         errBox.style.display = "block";
@@ -202,15 +201,17 @@
                         return;
                     }
 
-                    // 2. Kirim data akun baru ke server Google Firebase
+                    // Tambah akun baru ke list
+                    listUser.push({ username: user, email: email, password: pass });
+
+                    // Simpan balik list terbaru ke cloud
                     return fetch(dbUrl, {
                         method: 'POST',
-                        headers: {'content-type':'application/json'},
-                        body: JSON.stringify({username: user, email: email, password: pass})
+                        body: JSON.stringify(listUser)
                     });
                 })
                 .then(res => {
-                    if(res) {
+                    if (res) {
                         document.getElementById("regUser").value = "";
                         document.getElementById("regEmail").value = "";
                         document.getElementById("regPass").value = "";
@@ -221,7 +222,7 @@
                     }
                 })
                 .catch(() => {
-                    errBox.textContent = "Gagal terhubung ke server cloud!";
+                    errBox.textContent = "Gagal terhubung ke database internet!";
                     errBox.style.display = "block";
                 })
                 .finally(() => {
@@ -230,7 +231,7 @@
                 });
         }
 
-        // FUNGSI LOGIN: Cek data langsung dari Google Firebase (Aman diakses semua HP & Laptop)
+        // FUNGSI LOGIN
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
@@ -247,14 +248,14 @@
             btn.textContent = "Memeriksa...";
 
             fetch(dbUrl)
-                .then(res => res.json())
-                .then(data => {
-                    let listUser = [];
-                    if (data) {
-                        listUser = Object.values(data);
-                    }
+                .then(res => {
+                    if (!res.ok) return [];
+                    return res.json();
+                })
+                .then(listUser => {
+                    if (!Array.isArray(listUser)) listUser = [];
 
-                    // Cari akun yang cocok di database online
+                    // Cari akun yang cocok
                     const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
 
                     if (akunDitemukan) {
@@ -266,7 +267,7 @@
                     }
                 })
                 .catch(() => {
-                    errBox.textContent = "Gagal memuat server cloud!";
+                    errBox.textContent = "Gagal memuat database internet!";
                     errBox.style.display = "block";
                 })
                 .finally(() => {
