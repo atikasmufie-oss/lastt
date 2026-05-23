@@ -142,7 +142,7 @@
     </div>
 
     <script>
-        // Database publik yang anti-blokir dan bisa diakses lancar dari HP / Laptop mana saja
+        // Jalur database cloud baru yang sudah dikunci fiturnya
         const dbUrl = "https://kvdb.io/MN88Y3S89gB682L3bA764t/akun_kobo";
 
         function pindahForm() {
@@ -162,7 +162,7 @@
             }
         }
 
-        // FUNGSI DAFTAR
+        // FUNGSI REGISTER (FIXED HEADER JSON)
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -181,16 +181,14 @@
             btn.disabled = true;
             btn.textContent = "Menyimpan...";
 
-            // Ambil daftar user yang sudah ada di cloud
             fetch(dbUrl)
                 .then(res => {
-                    if (!res.ok) return []; // jika database masih kosong
+                    if (!res.ok) return [];
                     return res.json();
                 })
                 .then(listUser => {
                     if (!Array.isArray(listUser)) listUser = [];
 
-                    // Cek duplikat username
                     const userSudahAda = listUser.some(akun => akun.username.toLowerCase() === user.toLowerCase());
                     if (userSudahAda) {
                         errBox.textContent = "Username ini sudah terdaftar!";
@@ -201,12 +199,14 @@
                         return;
                     }
 
-                    // Tambah akun baru ke list
                     listUser.push({ username: user, email: email, password: pass });
 
-                    // Simpan balik list terbaru ke cloud
+                    // PERBAIKAN DI SINI: Menambahkan header 'Content-Type' agar server mau menerima datanya
                     return fetch(dbUrl, {
                         method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         body: JSON.stringify(listUser)
                     });
                 })
@@ -255,7 +255,6 @@
                 .then(listUser => {
                     if (!Array.isArray(listUser)) listUser = [];
 
-                    // Cari akun yang cocok
                     const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
 
                     if (akunDitemukan) {
