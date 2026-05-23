@@ -5,130 +5,219 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Register - BOKOBOKO</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Source Sans 3', sans-serif; }
+        /* === TEMPLATE STYLE KACA (GLASSMORPHISM) ASLI === */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-shadow: none;
+            box-sizing: border-box; 
+            font-family: 'Source Sans 3', sans-serif; 
+        }
+        
         body {
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            background-size: cover;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .glass-box {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px;
+
+        .wrapper {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 40px 30px;
             border-radius: 20px;
             width: 380px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
             text-align: center;
+            transition: all 0.3s ease;
         }
-        h2 { color: #2b5876; margin-bottom: 25px; font-weight: 600; }
+
+        h2 { 
+            color: #2b5876; 
+            margin-bottom: 25px; 
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         input {
             width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            border: none;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
+            padding: 14px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
             outline: none;
             color: #333;
             font-size: 15px;
+            transition: 0.3s;
         }
-        input::placeholder { color: #666; }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: #4a90e2;
+        }
+
+        input::placeholder { 
+            color: #666; 
+        }
+
         button {
             width: 100%;
             padding: 14px;
-            background: #4a90e2;
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
             border: none;
             color: white;
             font-weight: bold;
             font-size: 16px;
-            border-radius: 10px;
+            border-radius: 50px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
             transition: 0.3s ease;
         }
-        button:hover { background: #357abd; transform: translateY(-2px); }
-        .switch-text { margin-top: 25px; font-size: 14px; color: #444; }
-        .switch-text span { color: #104f9e; cursor: pointer; font-weight: bold; text-decoration: underline; }
-        .back-link { display: inline-block; margin-top: 20px; font-size: 13px; color: #555; text-decoration: none; }
-        .back-link:hover { color: #000; }
+
+        button:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .switch-box { 
+            margin-top: 25px; 
+            font-size: 14px; 
+            color: #444; 
+        }
+
+        .switch-box span { 
+            color: #104f9e; 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-decoration: underline; 
+        }
+
+        .back-home { 
+            display: inline-block; 
+            margin-top: 20px; 
+            font-size: 13px; 
+            color: #555; 
+            text-decoration: none; 
+            transition: 0.2s;
+        }
+
+        .back-home:hover { 
+            color: #000; 
+        }
+
+        /* Pesan Error Halus Pengganti Alert Bawaan Browser */
+        .error-msg {
+            color: #d9534f;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
 
-    <div class="glass-box">
-        <!-- TAMPILAN MASUK (LOGIN) -->
-        <div id="loginSection">
+    <div class="wrapper">
+        
+        <div id="loginForm">
             <h2>Masuk Akun</h2>
-            <input type="text" id="inputUser" placeholder="Masukkan Username">
-            <input type="password" id="inputPass" placeholder="Masukkan Password">
-            <button onclick="aksiLogin()">Masuk</button>
-            <p class="switch-text">Belum punya akun? <span onclick="geserForm()">Daftar di sini</span></p>
+            <div class="input-group">
+                <input type="text" id="loginUser" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <input type="password" id="loginPass" placeholder="Password">
+            </div>
+            <button onclick="prosesLogin()">Masuk</button>
+            <div id="loginError" class="error-msg">Username/Password salah atau belum terdaftar!</div>
+            <p class="switch-box">Belum punya akun? <span onclick="pindahForm()">Daftar di sini</span></p>
         </div>
 
-        <!-- TAMPILAN DAFTAR (REGISTER) -->
-        <div id="registerSection" style="display: none;">
+        <div id="registerForm" style="display: none;">
             <h2>Daftar Akun</h2>
-            <input type="text" id="regUser" placeholder="Buat Username Baru">
-            <input type="password" id="regPass" placeholder="Buat Password Baru">
-            <button onclick="aksiRegister()">Daftar</button>
-            <p class="switch-text">Sudah punya akun? <span onclick="geserForm()">Login di sini</span></p>
+            <div class="input-group">
+                <input type="text" id="regUser" placeholder="Buat Username">
+            </div>
+            <div class="input-group">
+                <input type="password" id="regPass" placeholder="Buat Password">
+            </div>
+            <button onclick="prosesRegister()">Daftar</button>
+            <div id="regError" class="error-msg">Form tidak boleh ada yang kosong!</div>
+            <p class="switch-box">Sudah punya akun? <span onclick="pindahForm()">Login di sini</span></p>
         </div>
 
-        <a href="../index.html" class="back-link">← Kembali ke Awalan</a>
+        <a href="../index.html" class="back-home">← Kembali ke Awalan</a>
     </div>
 
     <script>
-        // Fungsi pindah-pindah form daftar & login
-        function geserForm() {
-            const formLogin = document.getElementById("loginSection");
-            const formReg = document.getElementById("registerSection");
-            if(formLogin.style.display === "none") {
-                formLogin.style.display = "block";
-                formReg.style.display = "none";
+        // Fungsi geser ganti form login <-> register
+        function pindahForm() {
+            const login = document.getElementById("loginForm");
+            const register = document.getElementById("registerForm");
+            
+            // Sembunyikan pesan error setiap kali pindah form
+            document.getElementById("loginError").style.display = "none";
+            document.getElementById("regError").style.display = "none";
+
+            if (login.style.display === "none") {
+                login.style.display = "block";
+                register.style.display = "none";
             } else {
-                formLogin.style.display = "none";
-                formReg.style.display = "block";
+                login.style.display = "none";
+                register.style.display = "block";
             }
         }
 
-        // Fungsi Simpan Pendaftaran Akun Baru
-        function aksiRegister() {
-            const u = document.getElementById("regUser").value;
-            const p = document.getElementById("regPass").value;
+        // Fungsi Register (Simpan Akun)
+        function prosesRegister() {
+            const user = document.getElementById("regUser").value.trim();
+            const pass = document.getElementById("regPass").value.trim();
+            const errBox = document.getElementById("regError");
 
-            if(!u || !p) {
-                alert("Form tidak boleh ada yang kosong!");
+            if (user === "" || pass === "") {
+                errBox.style.display = "block"; // Muncul tulisan merah di bawah tombol
                 return;
             }
 
-            localStorage.setItem("saved_username", u);
-            localStorage.setItem("saved_password", p);
-            alert("Akunmu berhasil terdaftar! Silakan coba login.");
-            geserForm();
+            // Simpan ke database lokal browser
+            localStorage.setItem("saved_username", user);
+            localStorage.setItem("saved_password", pass);
+
+            // Bersihkan form register
+            document.getElementById("regUser").value = "";
+            document.getElementById("regPass").value = "";
+            
+            // Langsung balik ke form login biar user bisa langsung masuk
+            pindahForm();
         }
 
-        // Fungsi Cek Login + Balik Otomatis ke Landing Page Utama
-        function aksiLogin() {
-            const userMasuk = document.getElementById("inputUser").value;
-            const passMasuk = document.getElementById("inputPass").value;
+        // Fungsi Login & Balik Otomatis ke Landing Page Kobo
+        function prosesLogin() {
+            const userMasuk = document.getElementById("loginUser").value.trim();
+            const passMasuk = document.getElementById("loginPass").value.trim();
+            const errBox = document.getElementById("loginError");
 
-            const userTerdaftar = localStorage.getItem("saved_username");
-            const passTerdaftar = localStorage.getItem("saved_password");
+            // Mengambil data akun yang pernah didaftarkan
+            const dbUser = localStorage.getItem("saved_username");
+            const dbPass = localStorage.getItem("saved_password");
 
-            if (userMasuk === userTerdaftar && passMasuk === passTerdaftar && userTerdaftar !== null) {
-                alert("Login Berhasil! Membuka halaman utama...");
-                
-                // Simpan nama agar terbaca di halaman depan
+            if (userMasuk === dbUser && passMasuk === dbPass && dbUser !== null) {
+                // Simpan session user yang sedang aktif agar dibaca index.html
                 localStorage.setItem("loggedInUser", userMasuk);
                 
-                // KELUAR FOLDER LOGIN DAN BALIK KE INDEX LANDING PAGE UTAMA
+                // LANGSUNG BALIK KE HALAMAN DEPAN SECARA SILENT (TANPA POP-UP ALERT)
                 window.location.href = "../index.html"; 
             } else {
-                alert("Maaf, Username atau Password salah!");
+                errBox.style.display = "block"; // Muncul teks merah kalau gagal
             }
         }
     </script>
