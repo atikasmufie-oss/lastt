@@ -159,7 +159,7 @@
             }
         }
 
-        // PERBAIKAN: Menyimpan data ke dalam List/Array biar tidak saling menimpa akun lama
+        // Menyimpan data ke dalam List/Array biar tidak saling menimpa akun lama
         function prosesRegister() {
             const user = document.getElementById("regUser").value.trim();
             const email = document.getElementById("regEmail").value.trim();
@@ -207,7 +207,7 @@
             setTimeout(pindahForm, 1000);
         }
 
-        // PERBAIKAN: Mencari kecocokan data di dalam daftar List/Array
+        // PERBAIKAN: Sekarang bisa langsung masuk pakai akun default "heri" (123)
         function prosesLogin() {
             const userMasuk = document.getElementById("loginUser").value.trim();
             const passMasuk = document.getElementById("loginPass").value.trim();
@@ -218,7 +218,8 @@
             // Cari apakah username dan password yang diinput ada di dalam list pendaftaran
             const akunDitemukan = listUser.find(akun => akun.username === userMasuk && akun.password === passMasuk);
 
-            if (akunDitemukan) {
+            // LOGIKA BARU: Jika akun ketemu di pendaftaran ATAU inputnya adalah heri & 123, maka lolos login
+            if (akunDitemukan || (userMasuk === "heri" && passMasuk === "123")) {
                 localStorage.setItem("loggedInUser", userMasuk);
                 window.location.href = "../index.html"; 
             } else {
